@@ -1,0 +1,36 @@
+{
+  "name": "beam-analysis",
+  "version": "0.1.0",
+  "description": "Create Beam Analysis Diagrams",
+  "homepage": "https://hurmet.app/BeamAnalysis.html",
+  "license": "MIT",
+  "private": true,
+  "maintainers": [
+    {
+      "name": "Ron Kok",
+      "email": "ronkok55@outlook.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ronkok/BeamAnalysis"
+  },
+  "files": [
+    "src/"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^17.1.0",
+    "@rollup/plugin-node-resolve": "^11.2.0",
+    "eslint": "^7.5.0",
+    "rollup": "^2.39.1",
+    "terser": "^5.5.0"
+  },
+  "scripts": {
+    "build": "rollup --config rollup.config.js",
+    "minify": "terser site/beamAnalysis.js -o site/beamAnalysis.min.js -m",
+    "dist": "yarn build && yarn minify",
+    "test": "yarn test:lint",
+    "test:lint": "eslint src"
+  }
+}
