@@ -364,7 +364,7 @@ export function drawShearsMomentsAndDeflections(beam, nodes, spans, cases, yCoor
 
   if (beam.EI !== 1) {
     // Insert the max and min deflection values
-    beam.deflectionMax = deflectionMax
+    beam.deflectionMax = Math.max(Math.abs(deflectionMax), Math.abs(deflectionMin))
     f = beam.SI ? 1000 : (12 / 0.3048)
     let sText = ""
     let xText = 0
