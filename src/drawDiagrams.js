@@ -249,12 +249,7 @@ export function drawShearsMomentsAndDeflections(beam, nodes, spans, cases, yCoor
         }
 
         if (seg.Mmax.right.case === combern || seg.Mmin.right.case === combern) {
-          if (i === numSpans && j === spans[i].segments.length - 1) {
-            if (Math.abs(mEnd) > mSmall) {
-              wM.push(mEnd)
-              wMx.push(beam.length)
-            }
-          }
+          checkMs(mEnd, seg.xOfLeftEnd + seg.length, wM, wMx, spans, beam.length, mSmall)
         }
 
         lastW2f = w2f
