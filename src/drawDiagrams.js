@@ -172,17 +172,7 @@ export function drawShearsMomentsAndDeflections(beam, nodes, spans, cases, yCoor
         }
 
         if (seg.Vmax.right.case === combern || seg.Vmin.right.case === combern) {
-          const nextSeg = j < spans[i].segments.length - 1
-            ? spans[i].segments[j + 1]
-            : i < numSpans
-            ? spans[i + 1].segments[0]
-            : { wlf: 0, V1: 0 }
-          if (i === numSpans && j === spans[i].segments.length - 1) {
-            if (Math.abs(vEnd) > vSmall) {
-              checkVs(vEnd, beam.length, wV, wVx, spans, beam.length)
-            }
-          } else if (!(nextSeg.w1f[combern] === w2f &&
-              Math.abs(nextSeg.V1[combern] - vEnd) < vSmall)) {
+          if (Math.abs(vEnd) > vSmall) {
             checkVs(vEnd, seg.xOfLeftEnd + seg.length, wV, wVx, spans, beam.length)
           }
         }
@@ -337,7 +327,7 @@ export function drawShearsMomentsAndDeflections(beam, nodes, spans, cases, yCoor
     }
   }
 
-  // Insert the values of the local shear maximums
+  // Write the values of the local shear maximums onto the diagrams.
   f = 1 / (beam.SI ? 1000 : 4448.2216152605) // conversion factor for N to kips or MN
   while (wV.length > 0) {
     const xText = (beam.xDiagram + beam.xScale * wVx.shift()).toFixed(2)
@@ -347,7 +337,7 @@ export function drawShearsMomentsAndDeflections(beam, nodes, spans, cases, yCoor
     svg += Draw.text(round(wV.shift() * f, 3), xText, yText, horizAlign)
   }
 
-  // Insert the values of the local bending maximums
+  // Write the values of the local bending maximums onto the diagrams.
   f = beam.convention / (beam.SI ? 1000 : 4448.2216152605 * 0.3048)
   while (wM.length > 0) {
     const xText = (beam.xDiagram + beam.xScale * wMx.shift()).toFixed(2)
