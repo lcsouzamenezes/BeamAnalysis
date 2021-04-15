@@ -22,8 +22,8 @@ export function clear() {
     document.getElementById(`to${i}`).disabled = true
   }
 
-  document.getElementById("detail0").value = ""
-  document.getElementById("detail1").value = ""
+/*  document.getElementById("detail0").value = ""
+  document.getElementById("detail1").value = "" */
 
   document.getElementById("diagram-wrapper").innerHTML = ""
 }
