@@ -10,7 +10,10 @@ export function writeOutput(img, input, beam, nodes, extremes) {
   html += `<p><strong>Input</strong>${img}</p>\n`
   html += "<pre><code>E: " + input.E + (beam.SI ? " ksi" : " MPa") + "\n"
   if (input.section && sections[input.section]) { html += "Section: " + input.section + "\n" }
-  if (beam.I) { html += "I: " + beam.I + (beam.SI ? " mm⁴/10⁶" : " in⁴" ) + "\n" }
+  if (beam.I) {
+    const I = beam.SI && input.section && sections[input.section] ? round(beam.I, 3) : beam.I
+    html += "I: " + I + (beam.SI ? " mm⁴/10⁶" : " in⁴" ) + "\n"
+  }
   if (beam.k) { html += "k" + beam.k + (beam.SI ? " kN/mm" : " kips/in" ) + "\n" }
   html += "Beam: " + fixity(input.node[0])
   for (let i = 0; i < 6; i++) {
