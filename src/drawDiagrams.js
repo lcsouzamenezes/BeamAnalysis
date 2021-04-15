@@ -427,12 +427,6 @@ const checkVs = (v, x, wV, wVx, spans, beamLength) => {
 const checkMs = (m, x, wM, wMx, spans, beamLength, mSmall) => {
   // Check if we should write this value onto the moment diagram
   if (Math.abs(m) < mSmall) { return false }
-/*   if (wM.length > 0 && Math.abs(wMx[wMx.length - 1] - x) < 0.001 * x) {
-    return false
-  }
-  if (wM.length > 0 && wM[wM.length - 1] === m && wMx[wMx.length - 1] === x) {
-    return false
-  } */
   let gottaWrite = true // initialize the variable
   const shortDistance = 0.15 * beamLength
 
@@ -455,14 +449,14 @@ const checkMs = (m, x, wM, wMx, spans, beamLength, mSmall) => {
         }
       }
 
-      const midPoint = seg.xOfLeftEnd + seg.length / 2
-      if (Math.abs(midPoint - x) < shortDistance) {
-        if (m > 0) {
-          if (seg.Mmax.mid.value > m) {
-            gottaWrite = false
-            break
-          }
-        } else if (seg.Mmin.mid.value < m) {
+      if (m > 0 && Math.abs(seg.Mmax.mid.x - x) < shortDistance) {
+        if (seg.Mmax.mid.value > m) {
+          gottaWrite = false
+          break
+        }
+      }
+      if (m < 0 && Math.abs(seg.Mmin.mid.x - x) < shortDistance) {
+        if (seg.Mmin.mid.value < m) {
           gottaWrite = false
           break
         }

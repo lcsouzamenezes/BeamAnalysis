@@ -65,10 +65,26 @@ const newSegment = (length, xOfLeftEnd) => {
     Mf: 0,
     w1: [0, 0, 0, 0, 0, 0, 0, 0, 0], // distributed load at left end of segments.
     w2: [0, 0, 0, 0, 0, 0, 0, 0, 0], // at right end.
-    Vmax: { left: { value: 0, case: 0 }, mid: { value: 0, case: 0 }, right: { value: 0, case: 0 } },
-    Vmin: { left: { value: 0, case: 0 }, mid: { value: 0, case: 0 }, right: { value: 0, case: 0 } },
-    Mmax: { left: { value: 0, case: 0 }, mid: { value: 0, case: 0 }, right: { value: 0, case: 0 } },
-    Mmin: { left: { value: 0, case: 0 }, mid: { value: 0, case: 0 }, right: { value: 0, case: 0 } }
+    Vmax: {
+      left: { value: 0, case: 0 },
+      mid: { value: 0, case: 0, x: 0 },
+      right: { value: 0, case: 0 }
+    },
+    Vmin: {
+      left: { value: 0, case: 0 },
+      mid: { value: 0, case: 0, x: 0 },
+      right: { value: 0, case: 0 }
+    },
+    Mmax: {
+      left: { value: 0, case: 0 },
+      mid: { value: 0, case: 0, x: 0 },
+      right: { value: 0, case: 0 }
+    },
+    Mmin: {
+      left: { value: 0, case: 0 },
+      mid: { value: 0, case: 0, x: 0 },
+      right: { value: 0, case: 0 }
+    }
   }
 }
 

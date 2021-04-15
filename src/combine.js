@@ -260,6 +260,7 @@ export function combine(beam, nodes, spans, actions, deflections) {
               if (mMid > seg.Mmax.mid.value && mMid > 0.01) {
                 seg.Mmax.mid.value = mMid
                 seg.Mmax.mid.case = combern
+                seg.Mmax.mid.x = seg.xOfLeftEnd + xCross
                 if (mMid > mMax) { mMax = mMid }
               }
 
@@ -278,6 +279,7 @@ export function combine(beam, nodes, spans, actions, deflections) {
               if (mMid < seg.Mmin.mid.value && mMid < -0.01) {
                 seg.Mmin.mid.value = mMid
                 seg.Mmin.mid.case = combern
+                seg.Mmin.mid.x = seg.xOfLeftEnd + xCross
                 if (mMid < mMin) { mMin = mMid }
               }
 

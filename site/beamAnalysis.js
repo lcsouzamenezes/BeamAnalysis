@@ -2492,10 +2492,26 @@ var beam = (function (exports) {
       Mf: 0,
       w1: [0, 0, 0, 0, 0, 0, 0, 0, 0], // distributed load at left end of segments.
       w2: [0, 0, 0, 0, 0, 0, 0, 0, 0], // at right end.
-      Vmax: { left: { value: 0, case: 0 }, mid: { value: 0, case: 0 }, right: { value: 0, case: 0 } },
-      Vmin: { left: { value: 0, case: 0 }, mid: { value: 0, case: 0 }, right: { value: 0, case: 0 } },
-      Mmax: { left: { value: 0, case: 0 }, mid: { value: 0, case: 0 }, right: { value: 0, case: 0 } },
-      Mmin: { left: { value: 0, case: 0 }, mid: { value: 0, case: 0 }, right: { value: 0, case: 0 } }
+      Vmax: {
+        left: { value: 0, case: 0 },
+        mid: { value: 0, case: 0, x: 0 },
+        right: { value: 0, case: 0 }
+      },
+      Vmin: {
+        left: { value: 0, case: 0 },
+        mid: { value: 0, case: 0, x: 0 },
+        right: { value: 0, case: 0 }
+      },
+      Mmax: {
+        left: { value: 0, case: 0 },
+        mid: { value: 0, case: 0, x: 0 },
+        right: { value: 0, case: 0 }
+      },
+      Mmin: {
+        left: { value: 0, case: 0 },
+        mid: { value: 0, case: 0, x: 0 },
+        right: { value: 0, case: 0 }
+      }
     }
   };
 
@@ -4931,6 +4947,7 @@ var beam = (function (exports) {
                 if (mMid > seg.Mmax.mid.value && mMid > 0.01) {
                   seg.Mmax.mid.value = mMid;
                   seg.Mmax.mid.case = combern;
+                  seg.Mmax.mid.x = seg.xOfLeftEnd + xCross;
                   if (mMid > mMax) { mMax = mMid; }
                 }
 
@@ -4949,6 +4966,7 @@ var beam = (function (exports) {
                 if (mMid < seg.Mmin.mid.value && mMid < -0.01) {
                   seg.Mmin.mid.value = mMid;
                   seg.Mmin.mid.case = combern;
+                  seg.Mmin.mid.x = seg.xOfLeftEnd + xCross;
                   if (mMid < mMin) { mMin = mMid; }
                 }
 
@@ -5648,12 +5666,6 @@ var beam = (function (exports) {
   const checkMs = (m, x, wM, wMx, spans, beamLength, mSmall) => {
     // Check if we should write this value onto the moment diagram
     if (Math.abs(m) < mSmall) { return false }
-  /*   if (wM.length > 0 && Math.abs(wMx[wMx.length - 1] - x) < 0.001 * x) {
-      return false
-    }
-    if (wM.length > 0 && wM[wM.length - 1] === m && wMx[wMx.length - 1] === x) {
-      return false
-    } */
     let gottaWrite = true; // initialize the variable
     const shortDistance = 0.15 * beamLength;
 
@@ -5676,14 +5688,14 @@ var beam = (function (exports) {
           }
         }
 
-        const midPoint = seg.xOfLeftEnd + seg.length / 2;
-        if (Math.abs(midPoint - x) < shortDistance) {
-          if (m > 0) {
-            if (seg.Mmax.mid.value > m) {
-              gottaWrite = false;
-              break
-            }
-          } else if (seg.Mmin.mid.value < m) {
+        if (m > 0 && Math.abs(seg.Mmax.mid.x - x) < shortDistance) {
+          if (seg.Mmax.mid.value > m) {
+            gottaWrite = false;
+            break
+          }
+        }
+        if (m < 0 && Math.abs(seg.Mmin.mid.x - x) < shortDistance) {
+          if (seg.Mmin.mid.value < m) {
             gottaWrite = false;
             break
           }
