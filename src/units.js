@@ -118,6 +118,4 @@ export function unitToggle() {
     const to = document.getElementById(`to${i}`)
     to.value = convert(to.value, lengthFactor, 4)
   }
-
-  document.getElementById("diagram-wrapper").innerHTML = ""
 }

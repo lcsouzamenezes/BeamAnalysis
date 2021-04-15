@@ -91,7 +91,11 @@ const analyze = _ => {
 // A function for when a checkbox changes, e.g. "SI".
 const updateDiagram = _ => {
   const wrapper = document.getElementById("diagram-wrapper")
-  if (wrapper.children.length > 0) { analyze() }
+  if (wrapper.children.length > 0) {
+    analyze()
+  } else {
+    showGeometry()
+  }
 }
 
 const updateLoadCombinations = _ => {
@@ -106,7 +110,7 @@ const updateLoadCombinations = _ => {
     sdsInput.disabled = true
   }
   document.getElementById("SDS").disabled = combo.indexOf("ASCE") === -1
-  showGeometry()
+  updateDiagram()
 }
 
 const updateLoadShape = n => {
@@ -142,7 +146,7 @@ const updateLoadShape = n => {
 
 const toggleUnits = _ => {
   unitToggle();
-  showGeometry();
+  updateDiagram();
 }
 
 const selectResults = _ => {

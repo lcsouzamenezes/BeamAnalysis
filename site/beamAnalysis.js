@@ -3350,8 +3350,8 @@ var beam = (function (exports) {
       document.getElementById(`to${i}`).disabled = true;
     }
 
-    document.getElementById("detail0").value = "";
-    document.getElementById("detail1").value = "";
+  /*  document.getElementById("detail0").value = ""
+    document.getElementById("detail1").value = "" */
 
     document.getElementById("diagram-wrapper").innerHTML = "";
   }
@@ -5029,14 +5029,14 @@ var beam = (function (exports) {
   };
 
   const getLiveDM = (a, b, loadPattern, numSpans) => {
-    if (loadPattern.length === 1) {
-      a = a.map((e, i) => e  + b[i]);
-    } else {
+    if (Array.isArray(b[1])) {
       for (let k = 1; k <= numSpans; k++) {
         if (loadPattern.includes(k)) {
           a = a.map((e, i) => e + b[i][k]);
         }
       }
+    } else {
+      a = a.map((e, i) => e  + b[i]);
     }
     return a
   };
@@ -5393,17 +5393,7 @@ var beam = (function (exports) {
           }
 
           if (seg.Vmax.right.case === combern || seg.Vmin.right.case === combern) {
-            const nextSeg = j < spans[i].segments.length - 1
-              ? spans[i].segments[j + 1]
-              : i < numSpans
-              ? spans[i + 1].segments[0]
-              : { wlf: 0, V1: 0 };
-            if (i === numSpans && j === spans[i].segments.length - 1) {
-              if (Math.abs(vEnd) > vSmall) {
-                checkVs(vEnd, beam.length, wV, wVx, spans, beam.length);
-              }
-            } else if (!(nextSeg.w1f[combern] === w2f &&
-                Math.abs(nextSeg.V1[combern] - vEnd) < vSmall)) {
+            if (Math.abs(vEnd) > vSmall) {
               checkVs(vEnd, seg.xOfLeftEnd + seg.length, wV, wVx, spans, beam.length);
             }
           }
@@ -5558,7 +5548,7 @@ var beam = (function (exports) {
       }
     }
 
-    // Insert the values of the local shear maximums
+    // Write the values of the local shear maximums onto the diagrams.
     f = 1 / (beam.SI ? 1000 : 4448.2216152605); // conversion factor for N to kips or MN
     while (wV.length > 0) {
       const xText = (beam.xDiagram + beam.xScale * wVx.shift()).toFixed(2);
@@ -5568,7 +5558,7 @@ var beam = (function (exports) {
       svg += Draw.text(round(wV.shift() * f, 3), xText, yText, horizAlign);
     }
 
-    // Insert the values of the local bending maximums
+    // Write the values of the local bending maximums onto the diagrams.
     f = beam.convention / (beam.SI ? 1000 : 4448.2216152605 * 0.3048);
     while (wM.length > 0) {
       const xText = (beam.xDiagram + beam.xScale * wMx.shift()).toFixed(2);
@@ -5729,7 +5719,10 @@ var beam = (function (exports) {
     html += `<p><strong>Input</strong>${img}</p>\n`;
     html += "<pre><code>E: " + input.E + (beam.SI ? " ksi" : " MPa") + "\n";
     if (input.section && sections[input.section]) { html += "Section: " + input.section + "\n"; }
-    if (beam.I) { html += "I: " + beam.I + (beam.SI ? " mm⁴/10⁶" : " in⁴" ) + "\n"; }
+    if (beam.I) {
+      const I = beam.SI && input.section && sections[input.section] ? round(beam.I, 3) : beam.I;
+      html += "I: " + I + (beam.SI ? " mm⁴/10⁶" : " in⁴" ) + "\n";
+    }
     if (beam.k) { html += "k" + beam.k + (beam.SI ? " kN/mm" : " kips/in" ) + "\n"; }
     html += "Beam: " + fixity(input.node[0]);
     for (let i = 0; i < 6; i++) {
@@ -5971,8 +5964,6 @@ var beam = (function (exports) {
       const to = document.getElementById(`to${i}`);
       to.value = convert(to.value, lengthFactor, 4);
     }
-
-    document.getElementById("diagram-wrapper").innerHTML = "";
   }
 
   const wrapInImg = (diagram, yMax) => {
@@ -6055,7 +6046,11 @@ var beam = (function (exports) {
   // A function for when a checkbox changes, e.g. "SI".
   const updateDiagram = _ => {
     const wrapper = document.getElementById("diagram-wrapper");
-    if (wrapper.children.length > 0) { analyze(); }
+    if (wrapper.children.length > 0) {
+      analyze();
+    } else {
+      showGeometry();
+    }
   };
 
   const updateLoadCombinations = _ => {
@@ -6070,7 +6065,7 @@ var beam = (function (exports) {
       sdsInput.disabled = true;
     }
     document.getElementById("SDS").disabled = combo.indexOf("ASCE") === -1;
-    showGeometry();
+    updateDiagram();
   };
 
   const updateLoadShape = n => {
@@ -6106,7 +6101,7 @@ var beam = (function (exports) {
 
   const toggleUnits = _ => {
     unitToggle();
-    showGeometry();
+    updateDiagram();
   };
 
   const selectResults = _ => {
