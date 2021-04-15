@@ -358,14 +358,14 @@ const getNumComberns = (comboSet, isService, beam) => {
 }
 
 const getLiveDM = (a, b, loadPattern, numSpans) => {
-  if (loadPattern.length === 1) {
-    a = a.map((e, i) => e  + b[i])
-  } else {
+  if (Array.isArray(b[1])) {
     for (let k = 1; k <= numSpans; k++) {
       if (loadPattern.includes(k)) {
         a = a.map((e, i) => e + b[i][k])
       }
     }
+  } else {
+    a = a.map((e, i) => e  + b[i])
   }
   return a
 }
