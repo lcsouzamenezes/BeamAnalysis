@@ -17,7 +17,7 @@ export function writeOutput(img, input, beam, nodes, extremes) {
   if (beam.k) { html += "k" + beam.k + (beam.SI ? " kN/mm" : " kips/in" ) + "\n" }
   html += "Beam: " + fixity(input.node[0])
   for (let i = 0; i < 6; i++) {
-    const L = document.getElementById(`L${i}`).value.trim()
+    const L = document.getElementById(`L${i}`).value.trim().replace(/ /g, "")
     if (L === "") { break }
     html += " " + L + (beam.SI ? "m" : "′")
     html += " " + fixity(input.node[i + 1])

@@ -1,6 +1,7 @@
 import { populateData } from "./populateData"
 import { createLoadDiagram } from "./createLoadDiagram"
 import { clear } from "./clear"
+import { populateInputFromText } from "./textInput"
 import { error } from "./utils"
 import { readForm } from "./readForm"
 import { doAnalysis } from "./analyze"
@@ -47,6 +48,14 @@ const showGeometry = _ => {
   const diagram = createLoadDiagram(beam, nodes, spans)
   const img = wrapInImg(diagram, beam.yLoad + 60)
   document.getElementById("diagram-wrapper").innerHTML = img
+}
+
+const processTextInput = _ => {
+  const str = document.getElementById("text-input").value
+  clear()
+  populateInputFromText(str)
+  analyze()
+  document.getElementById("input-parent").open = false
 }
 
 const analyze = _ => {
@@ -158,6 +167,7 @@ export {
   analyze,
   toggleUnits,
   clear,
+  processTextInput,
   showGeometry,
   selectResults,
   updateLoadCombinations,

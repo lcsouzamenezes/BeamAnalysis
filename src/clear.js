@@ -4,6 +4,7 @@ export function clear() {
   document.getElementById("I").value = ""
   document.getElementById("k").value = ""
   document.getElementById("combinations").value = "service"
+  document.getElementById("text-input").value = ""
 
   const geometry = document.getElementById("geometry")
   const nodes = geometry.getElementsByTagName("select");
