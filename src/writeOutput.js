@@ -8,7 +8,7 @@ const loadInitial = ["", "D", "F", "L", "H", "Lr", "S", "R", "W", "E"]
 export function writeOutput(img, input, beam, nodes, extremes) {
   let html = "<h4>Beam Analysis</h4>\n"
   html += `<p><strong>Input</strong>${img}</p>\n`
-  html += "<pre><code>E: " + input.E + (beam.SI ? " ksi" : " MPa") + "\n"
+  html += "<pre><code>E: " + input.E + (beam.SI ? " MPa" : " ksi") + "\n"
   if (input.section && sections[input.section]) { html += "Section: " + input.section + "\n" }
   if (beam.I) {
     const I = beam.SI && input.section && sections[input.section] ? round(beam.I, 3) : beam.I
