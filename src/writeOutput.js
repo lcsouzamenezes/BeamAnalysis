@@ -132,7 +132,7 @@ export function writeOutput(img, input, beam, nodes, extremes) {
     f = beam.SI ? 1000 : (12 / 0.3048)
     const delta = round(f * beam.deflectionMax, 3) + " " + (beam.SI ? 'mm' : 'in')
     html += `<p>
-  <span class='hurmet-calc' data-entry="Δ = ${delta}">Δ = ${delta}</span>
+  <span class='hurmet-calc' data-entry="Δ = '${delta}'">Δ = ${delta}</span>
 </p>`
   }
 
