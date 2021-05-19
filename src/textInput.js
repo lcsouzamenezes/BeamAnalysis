@@ -1,7 +1,7 @@
 import { sections } from "./sections"
 
 const reE = /^ *E: *([\d,]+) *(?:ksi|MPa) *$/
-const reSection = /^ *Section: * ([A-Z\d\.]+) *$/
+const reSection = /^ *Section: * ([A-Z\d.]+) *$/
 const reI = /^ * I: *([\d,.]+) *(?:in⁴|mm⁴\/10⁶) *$/
 const rek = /^ *k = ([\d,.]+) *(?:kips\/in|kN\/mm) *$/
 const reCombo = /^ *Load combinations: *(service|ASCE 7-16|ASCE 7-16 ASD|2018 IBC|2018 IBC ASD|2015 NBCC) *$/
