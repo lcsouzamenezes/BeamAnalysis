@@ -3374,7 +3374,7 @@ var beam = (function (exports) {
   }
 
   const reE = /^ *E: *([\d,]+) *(?:ksi|MPa) *$/;
-  const reSection = /^ *Section: * ([A-Z\d\.]+) *$/;
+  const reSection = /^ *Section: * ([A-Z\d.]+) *$/;
   const reI = /^ * I: *([\d,.]+) *(?:in⁴|mm⁴\/10⁶) *$/;
   const rek = /^ *k = ([\d,.]+) *(?:kips\/in|kN\/mm) *$/;
   const reCombo = /^ *Load combinations: *(service|ASCE 7-16|ASCE 7-16 ASD|2018 IBC|2018 IBC ASD|2015 NBCC) *$/;
@@ -6103,7 +6103,7 @@ var beam = (function (exports) {
     const uri = svg.replace(symbols, encodeURIComponent);
 
     // Insert the URI into an <img> tag.
-    return `<img src="data:image/svg+xml;utf8,${uri}" alt="Beam Diagram" class="right">`
+    return `<img src="data:image/svg+xml;utf8,${uri}" alt="Beam Diagram" width="450" class="right">`
 
     // Write it into the document.
   };

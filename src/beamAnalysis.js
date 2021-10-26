@@ -28,7 +28,7 @@ const wrapInImg = (diagram, yMax) => {
   const uri = svg.replace(symbols, encodeURIComponent)
 
   // Insert the URI into an <img> tag.
-  return `<img src="data:image/svg+xml;utf8,${uri}" alt="Beam Diagram" class="right">`
+  return `<img src="data:image/svg+xml;utf8,${uri}" alt="Beam Diagram" width="450" class="right">`
 
   // Write it into the document.
 }
