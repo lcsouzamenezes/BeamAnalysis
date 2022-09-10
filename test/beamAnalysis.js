@@ -3381,9 +3381,9 @@ var beam = (function (exports) {
   const rePatterns = /^ *Patterned live loads: (yes|no) *$/;
   const reLLF = /^ *Live load factor: (1.0|0.5) *$/;
   const reSDS = /^ *SDS = ([\d.]*) *$/;
-  const rew = /^ *w([DLWSEFHR]|Lr) *= (-?[\d.]+(?: *-?[\d.]+)?) *(?:kips\/ft|kN\/m)(?:; *([\d.]+) *(?:′|m))?(?: *(-?[\d.]+) *(?:′|m))? *$/;
-  const reP = /^ *P([DLWSEFHR]|Lr) *= (-?[\d.]+) *(?:kips|kN)(?: *at *([\d.]+) *(?:′|m))? *$/;
-  const reM = /^ *M([DLWSEFHR]|Lr) *= (-?[\d.]+) *(?:kip·ft|kN·m)(?: *at *([\d.]+) *(?:′|m))? *$/;
+  const rew = /^ *w([DLWSEFHR]|Lr)? *= (-?[\d.]+(?: *-?[\d.]+)?) *(?:kips\/ft|kN\/m)(?:; *([\d.]+) *(?:′|m))?(?: *(-?[\d.]+) *(?:′|m))? *$/;
+  const reP = /^ *P([DLWSEFHR]|Lr)? *= (-?[\d.]+) *(?:kips|kN)(?: *at *([\d.]+) *(?:′|m))? *$/;
+  const reM = /^ *M([DLWSEFHR]|Lr)? *= (-?[\d.]+) *(?:kip·ft|kN·m)(?: *at *([\d.]+) *(?:′|m))? *$/;
   const reBeam = /^ *Beam:((?:p|f|h|ph|s|—|(?:[\d]+x)?[\d.,]+[m′]| +)+)$/;
 
   function populateInputFromText(str) {
@@ -3415,7 +3415,7 @@ var beam = (function (exports) {
       } else if (rew.test(lines[i])) {
         const parts  = lines[i].match(rew);
         document.getElementById(`loadShape${j}`).value = "w";
-        document.getElementById(`loadType${j}`).value = parts[1];
+        if (parts[1]) { document.getElementById(`loadType${j}`).value = parts[1]; }
         document.getElementById(`amount${j}`).value = parts[2];
         document.getElementById(`unit${j}`).textContent = SI ? "kN/m" : "kips/ft";
         if (parts[3]) {
@@ -3430,7 +3430,7 @@ var beam = (function (exports) {
       } else if (reP.test(lines[i])) {
         const parts  = lines[i].match(reP);
         document.getElementById(`loadShape${j}`).value = "P";
-        document.getElementById(`loadType${j}`).value = parts[1];
+        if (parts[1]) { document.getElementById(`loadType${j}`).value = parts[1]; }
         document.getElementById(`amount${j}`).value = parts[2];
         document.getElementById(`unit${j}`).textContent = SI ? "kN" : "kips";
         if (parts[3]) {
@@ -3441,7 +3441,7 @@ var beam = (function (exports) {
       } else if (reM.test(lines[i])) {
         const parts  = lines[i].match(reM);
         document.getElementById(`loadShape${j}`).value = "M";
-        document.getElementById(`loadType${j}`).value = parts[1];
+        if (parts[1]) { document.getElementById(`loadType${j}`).value = parts[1]; }
         document.getElementById(`amount${j}`).value = parts[2];
         document.getElementById(`unit${j}`).textContent = SI ? "kN·m" : "kip·ft";
         if (parts[3]) {
