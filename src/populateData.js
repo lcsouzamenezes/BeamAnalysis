@@ -146,7 +146,7 @@ export function populateData(input) {
     allLoadsAreUniform: true // subject to change below
   }
 
-  if (input.E !== "" && input.section === 1) {
+  if ((input.E === "" || input.E === 0) && input.section === "") {
     // We don't know E or I, so we won't do a deflection diagram.
     // But we will still do the shear and moment diagrams.
     beam.E = 1

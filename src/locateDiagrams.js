@@ -22,7 +22,7 @@ export function locateDiagrams(beam, nodes, extremes) {
   let yMax = yM
 
   // Get yText for moment
-  let yText = yM + mScale * mMin
+  let yText = yM - mScale * mMin
   if (yText > yMax) { yMax = yText }
 
   let yDeflection = 0

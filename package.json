@@ -18,7 +18,6 @@
   "files": [
     "src/"
   ],
-  "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-node-resolve": "^11.2.0",
@@ -28,7 +27,7 @@
   },
   "scripts": {
     "build": "rollup --config rollup.config.js",
-    "minify": "terser site/beamAnalysis.js -o site/beamAnalysis.min.js -m",
+    "minify": "terser test/beamAnalysis.js -o test/beamAnalysis.min.js -m",
     "dist": "yarn build && yarn minify",
     "test": "yarn test:lint",
     "test:lint": "eslint src"
