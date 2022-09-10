@@ -2562,7 +2562,7 @@ var beam = (function (exports) {
       I: 0, // moment of inertia
       k: 0, // spring constant
       convention: input.convention ? 1 : -1, // Plot positive moment on compression or tension side.
-      SI: input.SI, // boolean. Are we using SI units?
+      SI: input.SI || false, // boolean. Are we using SI units?
       doLiveLoadPatterns: input.patterns,
       comboName: input.combinations,
       LLF: Number(input.LLF),
@@ -3389,6 +3389,7 @@ var beam = (function (exports) {
   function populateInputFromText(str) {
     document.getElementById("SI").value = str.indexOf("MPa") > -1;
     const lines = str.split(/\r?\n/g);
+    let SI = false;
 
     let j = 0;
     for (let i = 0; i < lines.length; i++) {
@@ -3416,32 +3417,41 @@ var beam = (function (exports) {
         document.getElementById(`loadShape${j}`).value = "w";
         document.getElementById(`loadType${j}`).value = parts[1];
         document.getElementById(`amount${j}`).value = parts[2];
+        document.getElementById(`unit${j}`).textContent = SI ? "kN/m" : "kips/ft";
         if (parts[3]) {
           document.getElementById(`from${j}`).value = parts[3];
         }
         if (parts[4]) {
           document.getElementById(`to${j}`).value = parts[4];
         }
+        document.getElementById(`from${j}`).disabled = false;
+        document.getElementById(`to${j}`).disabled = false;
         j += 1;
       } else if (reP.test(lines[i])) {
         const parts  = lines[i].match(reP);
         document.getElementById(`loadShape${j}`).value = "P";
         document.getElementById(`loadType${j}`).value = parts[1];
         document.getElementById(`amount${j}`).value = parts[2];
+        document.getElementById(`unit${j}`).textContent = SI ? "kN" : "kips";
         if (parts[3]) {
           document.getElementById(`from${j}`).value = parts[3];
         }
+        document.getElementById(`from${j}`).disabled = false;
         j += 1;
       } else if (reM.test(lines[i])) {
         const parts  = lines[i].match(reM);
         document.getElementById(`loadShape${j}`).value = "M";
         document.getElementById(`loadType${j}`).value = parts[1];
         document.getElementById(`amount${j}`).value = parts[2];
+        document.getElementById(`unit${j}`).textContent = SI ? "kN·m" : "kip·ft";
         if (parts[3]) {
           document.getElementById(`from${j}`).value = parts[3];
         }
+        document.getElementById(`from${j}`).disabled = false;
         j += 1;
       } else if (reBeam.test(lines[i])) {
+        SI = lines[i].indexOf("′") === -1;
+        document.getElementById("SI").value = SI;
         const elements = lines[i].match(reBeam)[1].trim().split(/ +/g);
         let nodeCounter = 0;
         let spanCounter = 0;
@@ -5838,9 +5848,12 @@ var beam = (function (exports) {
   function writeOutput(img, input, beam, nodes, extremes) {
     let html = "<h4>Beam Analysis</h4>\n";
     html += `<p><strong>Input</strong>${img}</p>\n`;
-    html += "<pre><code>E: " + input.E + (beam.SI ? " MPa" : " ksi") + "\n";
+    html += "<pre><code>";
+    if (input.E !== "" && input.E !== 1) {
+      html += "E: " + input.E + (beam.SI ? " MPa" : " ksi") + "\n";
+    }
     if (input.section && sections[input.section]) { html += "Section: " + input.section + "\n"; }
-    if (beam.I) {
+    if (beam.I !== "" && beam.I !== 1) {
       const I = beam.SI && input.section && sections[input.section] ? round(beam.I, 3) : beam.I;
       html += "I: " + I + (beam.SI ? " mm⁴/10⁶" : " in⁴" ) + "\n";
     }

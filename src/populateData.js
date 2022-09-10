@@ -135,7 +135,7 @@ export function populateData(input) {
     I: 0, // moment of inertia
     k: 0, // spring constant
     convention: input.convention ? 1 : -1, // Plot positive moment on compression or tension side.
-    SI: input.SI, // boolean. Are we using SI units?
+    SI: input.SI || false, // boolean. Are we using SI units?
     doLiveLoadPatterns: input.patterns,
     comboName: input.combinations,
     LLF: Number(input.LLF),

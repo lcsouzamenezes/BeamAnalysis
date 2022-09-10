@@ -16,6 +16,7 @@ const reBeam = /^ *Beam:((?:p|f|h|ph|s|—|(?:[\d]+x)?[\d.,]+[m′]| +)+)$/
 export function populateInputFromText(str) {
   document.getElementById("SI").value = str.indexOf("MPa") > -1
   const lines = str.split(/\r?\n/g)
+  let SI = false
 
   let j = 0
   for (let i = 0; i < lines.length; i++) {
@@ -43,32 +44,41 @@ export function populateInputFromText(str) {
       document.getElementById(`loadShape${j}`).value = "w"
       document.getElementById(`loadType${j}`).value = parts[1]
       document.getElementById(`amount${j}`).value = parts[2]
+      document.getElementById(`unit${j}`).textContent = SI ? "kN/m" : "kips/ft"
       if (parts[3]) {
         document.getElementById(`from${j}`).value = parts[3]
       }
       if (parts[4]) {
         document.getElementById(`to${j}`).value = parts[4]
       }
+      document.getElementById(`from${j}`).disabled = false
+      document.getElementById(`to${j}`).disabled = false
       j += 1
     } else if (reP.test(lines[i])) {
       const parts  = lines[i].match(reP)
       document.getElementById(`loadShape${j}`).value = "P"
       document.getElementById(`loadType${j}`).value = parts[1]
       document.getElementById(`amount${j}`).value = parts[2]
+      document.getElementById(`unit${j}`).textContent = SI ? "kN" : "kips"
       if (parts[3]) {
         document.getElementById(`from${j}`).value = parts[3]
       }
+      document.getElementById(`from${j}`).disabled = false
       j += 1
     } else if (reM.test(lines[i])) {
       const parts  = lines[i].match(reM)
       document.getElementById(`loadShape${j}`).value = "M"
       document.getElementById(`loadType${j}`).value = parts[1]
       document.getElementById(`amount${j}`).value = parts[2]
+      document.getElementById(`unit${j}`).textContent = SI ? "kN·m" : "kip·ft"
       if (parts[3]) {
         document.getElementById(`from${j}`).value = parts[3]
       }
+      document.getElementById(`from${j}`).disabled = false
       j += 1
     } else if (reBeam.test(lines[i])) {
+      SI = lines[i].indexOf("′") === -1
+      document.getElementById("SI").value = SI
       const elements = lines[i].match(reBeam)[1].trim().split(/ +/g)
       let nodeCounter = 0
       let spanCounter = 0
